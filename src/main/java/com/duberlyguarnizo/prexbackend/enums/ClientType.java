@@ -1,2 +1,5 @@
-package com.duberlyguarnizo.prexbackend.enums;public enum ClientType {
+package com.duberlyguarnizo.prexbackend.enums;
+
+public enum ClientType {
+    PERSON, COMPANY
 }
