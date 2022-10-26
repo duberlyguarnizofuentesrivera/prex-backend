@@ -29,18 +29,18 @@ public class SystemUserController {
     @GetMapping("/create-sample-user")
     public ResponseEntity<SystemUser> createSampleUser() {
         SystemUser systemUser = new SystemUser();
-        systemUser.setSystemUserUsername("noemi");
+        systemUser.setSystemUserUsername("bruno");
 
         systemUser.setSystemUserPassword(
-                jwtSecurityConfig.passwordEncoder().encode("noemi")
+                jwtSecurityConfig.passwordEncoder().encode("bruno")
         );
-        systemUser.setSystemUserRole(UserRole.ADMIN);
+        systemUser.setSystemUserRole(UserRole.USER);
         systemUser.setSystemUserCreationDate(LocalDateTime.now());
         systemUser.setSystemUserModificationDate(LocalDateTime.now());
-        systemUser.setSystemUserIdNumber("12345678");
-        systemUser.setSystemUserEmail("noemi@gmail.com");
-        systemUser.setSystemUserNames("Noemi Viviana Timana Becerra");
-        systemUser.setSystemUserPhone("123456789");
+        systemUser.setSystemUserIdNumber("74525845");
+        systemUser.setSystemUserEmail("brunito_mas_na@google.com");
+        systemUser.setSystemUserNames("Bruno Sebastian Guarnizo Timana");
+        systemUser.setSystemUserPhone("954687552");
         systemUser.setSystemUserStatus(UserStatus.ACTIVE);
         systemUserRepository.save(systemUser);
         systemUserRepository.save(systemUser);
@@ -67,13 +67,13 @@ public class SystemUserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<SystemUser> deleteSystemUser(@PathVariable Long id) {
+    public ResponseEntity<SystemUser> deleteSystemUser(@PathVariable("id") Long id) {
         systemUserRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SystemUser> getSystemUser(@PathVariable Long id) {
+    public ResponseEntity<SystemUser> getSystemUser(@PathVariable("id") Long id) {
         SystemUser result = systemUserRepository.findById(id).orElse(null);
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -82,42 +82,40 @@ public class SystemUserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<SystemUser>> getAllSystemUser(@RequestParam int page, @RequestParam int size) {
-        if (page < 0) {
-            page = 0;
-        }
-        if (size <= 0) {
-            size = 15;
-        }
+    public ResponseEntity<Page<SystemUser>> getAllSystemUser(@RequestParam(defaultValue = "10") Integer page, @RequestParam(defaultValue = "15") Integer size) {
         Page<SystemUser> result = systemUserRepository.findAll(PageRequest.of(page, size));
         result.getTotalPages();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    public ResponseEntity<Page<SystemUser>> getAllSystemUsersByRole(@RequestParam int page, @RequestParam int size, @RequestParam UserRole role) {
-        if (page < 0) {
-            page = 0;
+    @GetMapping("/role/{role}")
+    public ResponseEntity<Page<SystemUser>> getAllSystemUsersByRole(@PathVariable("role") String role, @RequestParam(defaultValue = "10") Integer page, @RequestParam(defaultValue = "15") Integer size) {
+        try {
+            UserRole userRole = UserRole.valueOf(role);
+            Page<SystemUser> result = systemUserRepository.findBySystemUserRole(userRole, PageRequest.of(page, size));
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (size <= 0) {
-            size = 15;
-        }
-        Page<SystemUser> result = systemUserRepository.findBySystemUserRole(role, PageRequest.of(page, size));
-        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    public ResponseEntity<Page<SystemUser>> getAllSystemUsersByUserStatus(@RequestParam int page, @RequestParam int size, @RequestParam UserStatus status) {
-        if (page < 0) {
-            page = 0;
+    @GetMapping("/status/{status}")
+    public ResponseEntity<Page<SystemUser>> getAllSystemUsersByUserStatus(@PathVariable("status") String status, @RequestParam(defaultValue = "10") Integer page, @RequestParam(defaultValue = "15") Integer size) {
+        try {
+            UserStatus userStatus = UserStatus.valueOf(status);
+            Page<SystemUser> result = systemUserRepository.findBySystemUserStatus(userStatus, PageRequest.of(page, size));
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (size <= 0) {
-            size = 15;
-        }
-        Page<SystemUser> result = systemUserRepository.findBySystemUserStatus(status, PageRequest.of(page, size));
-        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    public ResponseEntity<SystemUser> getSystemUsersByUserName(String username) {
+    @GetMapping("/username/{username}")
+    public ResponseEntity<SystemUser> getSystemUsersByUserName(@PathVariable("username") String username) {
         SystemUser result = systemUserRepository.findBySystemUserUsername(username);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

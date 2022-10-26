@@ -3,10 +3,10 @@ package com.duberlyguarnizo.prexbackend.repository;
 import com.duberlyguarnizo.prexbackend.enums.ShipmentProblem;
 import com.duberlyguarnizo.prexbackend.enums.ShipmentStatus;
 import com.duberlyguarnizo.prexbackend.model.Shipment;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,29 +14,29 @@ import java.util.List;
 public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
     List<Shipment> findByShipmentCode(String shipmentCode);
 
-    List<Shipment> findByShipmentReceptionDateNotNull();
+    List<Shipment> findByShipmentReceptionDateNotNull(PageRequest pageRequest);
 
-    List<Shipment> findByShipmentOnRouteDateNotNull();
+    List<Shipment> findByShipmentOnRouteDateNotNull(PageRequest pageRequest);
 
-    List<Shipment> findByShipmentOnReturnDateNotNull();
+    List<Shipment> findByShipmentOnReturnDateNotNull(PageRequest pageRequest);
 
-    List<Shipment> findByShipmentReturnDateNotNull();
+    List<Shipment> findByShipmentReturnDateNotNull(PageRequest pageRequest);
 
-    List<Shipment> findByShipmentDeliveryDateNotNull();
+    List<Shipment> findByShipmentDeliveryDateNotNull(PageRequest pageRequest);
 
-    List<Shipment> findByShipmentClient_ClientId(Long clientId);
+    List<Shipment> findByShipmentClient_ClientId(Long clientId);//NOSONAR
 
-    List<Shipment> findByShipmentReceiver_ReceiverId(Long receiverId);
+    List<Shipment> findByShipmentReceiver_ReceiverId(Long receiverId);//NOSONAR
 
-    List<Shipment> findByShipmentDeliveryTransporter_SystemUserId(Long systemUserId);
+    List<Shipment> findByShipmentDeliveryTransporter_SystemUserId(Long systemUserId, PageRequest pageRequest);//NOSONAR
 
-    List<Shipment> findByShipmentPickUpTransporter_SystemUserId(Long systemUserId);
+    List<Shipment> findByShipmentPickUpTransporter_SystemUserId(Long systemUserId, PageRequest pageRequest);//NOSONAR
 
-    List<Shipment> findByShipmentReceiverUser_SystemUserId(Long systemUserId);
+    List<Shipment> findByShipmentReceiverUser_SystemUserId(Long systemUserId, PageRequest pageRequest);//NOSONAR
 
-    List<Shipment> findByShipmentModificationDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<Shipment> findByShipmentModificationDateBetween(LocalDateTime startDate, LocalDateTime endDate, PageRequest pageRequest);
 
-    List<Shipment> findByShipmentProblems(ShipmentProblem shipmentProblem);
+    List<Shipment> findByShipmentProblems(ShipmentProblem shipmentProblem, PageRequest pageRequest);
 
-    List<Shipment> findByShipmentStatus(ShipmentStatus shipmentStatus);
+    List<Shipment> findByShipmentStatus(ShipmentStatus shipmentStatus, PageRequest pageRequest);
 }

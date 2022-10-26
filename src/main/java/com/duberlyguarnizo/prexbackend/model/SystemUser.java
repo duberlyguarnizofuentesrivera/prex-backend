@@ -26,6 +26,7 @@ public class SystemUser {
     @NotBlank
     private String systemUserNames;
     @NotBlank
+    @Column(unique = true)
     private String systemUserIdNumber;
     private String systemUserPhone;
     private String systemUserPhone2;

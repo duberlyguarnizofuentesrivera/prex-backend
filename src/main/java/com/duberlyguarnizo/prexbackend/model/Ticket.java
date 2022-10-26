@@ -24,6 +24,7 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ticketId;
     @NotBlank
+    @Column(unique = true)
     private String ticketCode;
     @OneToMany
     private List<Shipment> shipments;

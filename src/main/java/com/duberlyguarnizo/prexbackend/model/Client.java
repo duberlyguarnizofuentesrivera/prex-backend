@@ -23,6 +23,7 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long clientId;
     @NotBlank
+    @Column(unique = true)
     private String clientIdNumber;
     private boolean clientIsCompany;
     @NotBlank

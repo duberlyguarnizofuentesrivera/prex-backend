@@ -15,6 +15,6 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     List<Address> findByAddressRegionAndAddressProvinceAndAddressDistrict(String addressRegion, String addressProvince, String addressDistrict);
 
-    List<Address> findByAddressModificationDate(LocalDateTime dateTime);
+    List<Address> findByAddressModificationDateBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
 }
 

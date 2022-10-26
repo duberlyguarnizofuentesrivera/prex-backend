@@ -25,6 +25,7 @@ public class Receiver {
     private boolean receiverIsCompany;
     @NotBlank
     private String receiverNames;
+    @Column(unique = true)
     private String receiverIdNumber;
     private String receiverPhone;
     @Email

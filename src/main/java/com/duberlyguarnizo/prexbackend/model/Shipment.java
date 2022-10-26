@@ -26,6 +26,7 @@ public class Shipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long shipmentId;
+    @Column(unique = true)
     private String shipmentCode;
     @Min(1)
     private int shipmentNumberOfPackages;

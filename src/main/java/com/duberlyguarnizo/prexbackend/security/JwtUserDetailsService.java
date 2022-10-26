@@ -2,7 +2,6 @@ package com.duberlyguarnizo.prexbackend.security;
 
 import com.duberlyguarnizo.prexbackend.model.SystemUser;
 import com.duberlyguarnizo.prexbackend.repository.SystemUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +13,11 @@ import java.util.Collections;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
-    @Autowired
-    private SystemUserRepository systemUserRepository;
+    private final SystemUserRepository systemUserRepository;
+
+    public JwtUserDetailsService(SystemUserRepository systemUserRepository) {
+        this.systemUserRepository = systemUserRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(final String username) {
