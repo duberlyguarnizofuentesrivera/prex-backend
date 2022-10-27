@@ -23,6 +23,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class Shipment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long shipmentId;

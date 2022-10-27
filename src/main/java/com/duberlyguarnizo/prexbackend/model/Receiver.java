@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -33,7 +34,7 @@ public class Receiver {
     private String receiverContactNames;
     @ToString.Exclude
     @OneToMany
-    private Set<Address> receiverAddresses;
+    private Set<Address> receiverAddresses = new HashSet<>();
     @CreationTimestamp
     private LocalDateTime receiverCreationDate;
     @UpdateTimestamp

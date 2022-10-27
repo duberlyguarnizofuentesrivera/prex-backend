@@ -12,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,7 +28,7 @@ public class Ticket {
     @Column(unique = true)
     private String ticketCode;
     @OneToMany
-    private List<Shipment> shipments;
+    private List<Shipment> shipments = new ArrayList<>();
     private double ticketTotalCost;
     @ToString.Exclude
     @ManyToOne

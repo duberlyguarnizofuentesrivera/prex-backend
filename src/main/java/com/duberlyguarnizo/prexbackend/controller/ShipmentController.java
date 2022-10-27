@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@RequestMapping("/shipment")
 public class ShipmentController {
     private final ShipmentRepository shipmentRepository;
 

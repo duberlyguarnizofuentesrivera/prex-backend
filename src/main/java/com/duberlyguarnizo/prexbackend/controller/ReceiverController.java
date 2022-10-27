@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@RequestMapping("/receiver")
 public class ReceiverController {
     private final ReceiverRepository receiverRepository;
 

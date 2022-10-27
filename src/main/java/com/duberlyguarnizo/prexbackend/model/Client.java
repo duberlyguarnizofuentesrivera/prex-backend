@@ -12,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 @Getter
 @Setter
@@ -36,7 +37,7 @@ public class Client {
     private UserStatus clientStatus;
     @ToString.Exclude
     @OneToMany
-    private Set<Address> clientPickUpAddresses;
+    private Set<Address> clientPickUpAddresses = new HashSet<>();
     @CreationTimestamp
     private LocalDateTime clientCreationDate;
     @UpdateTimestamp
