@@ -4,6 +4,7 @@ import com.duberlyguarnizo.prexbackend.model.Receiver;
 import com.duberlyguarnizo.prexbackend.repository.ReceiverRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,13 +56,13 @@ public class ReceiverController {
     }
 
     //Custom methods
-    @GetMapping("/name/{name}")
+    @GetMapping("/by-name/{name}")
     public ResponseEntity<Page<Receiver>> getReceiversByName(@PathVariable("name") String name, @RequestParam(defaultValue = "10") Integer page, @RequestParam(defaultValue = "15") Integer size) {
         Page<Receiver> result = receiverRepository.findByReceiverNames(name, PageRequest.of(page, size));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/dni/{dni}")
+    @GetMapping("/by-dni/{dni}")
     public ResponseEntity<Receiver> getReceiverByDni(@PathVariable("dni") String dni) {
         List<Receiver> result = receiverRepository.findByReceiverIdNumber(dni);
         if (result.isEmpty()) {
@@ -70,7 +71,7 @@ public class ReceiverController {
         return new ResponseEntity<>(result.get(0), HttpStatus.OK);
     }
 
-    @GetMapping("/is_company")
+    @GetMapping("/by-is-company")
     public ResponseEntity<List<Receiver>> getReceiversThatAreCompanies() {
         List<Receiver> result = receiverRepository.findByReceiverIsCompany(true);
         if (result.isEmpty()) {
@@ -79,7 +80,7 @@ public class ReceiverController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/is_not_company")
+    @GetMapping("/by-is-not-company")
     public ResponseEntity<List<Receiver>> getReceiversThatAreNotCompanies() {
         List<Receiver> result = receiverRepository.findByReceiverIsCompany(false);
         if (result.isEmpty()) {
@@ -88,8 +89,8 @@ public class ReceiverController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/date/{date}")
-    public ResponseEntity<List<Receiver>> getReceiversByDate(@PathVariable("date") LocalDate date) {
+    @GetMapping("/by-date/{date}")
+    public ResponseEntity<List<Receiver>> getReceiversByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         List<Receiver> result = receiverRepository.findByReceiverModificationDateBetween(date.atStartOfDay(), date.atTime(23, 59, 59));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

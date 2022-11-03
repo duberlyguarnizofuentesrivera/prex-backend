@@ -6,6 +6,7 @@ import com.duberlyguarnizo.prexbackend.model.Shipment;
 import com.duberlyguarnizo.prexbackend.repository.ShipmentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -94,7 +95,7 @@ public class ShipmentController {
     }
 
     @GetMapping("/by-date/{date}")
-    public ResponseEntity<List<Shipment>> getShipmentByDate(@PathVariable("date") LocalDate date, @RequestParam(defaultValue = "10") Integer page, @RequestParam(defaultValue = "15") Integer size) {
+    public ResponseEntity<List<Shipment>> getShipmentByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, @RequestParam(defaultValue = "10") Integer page, @RequestParam(defaultValue = "15") Integer size) {
         List<Shipment> result = shipmentRepository.findByShipmentModificationDateBetween(date.atStartOfDay(), date.atTime(13, 59, 59), PageRequest.of(page, size));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

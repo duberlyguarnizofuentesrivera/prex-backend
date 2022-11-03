@@ -4,6 +4,7 @@ import com.duberlyguarnizo.prexbackend.model.Address;
 import com.duberlyguarnizo.prexbackend.repository.AddressRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class AddressController {
     public AddressController(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
+
 
     //CRUD methods
     @PostMapping("/create")
@@ -55,22 +57,21 @@ public class AddressController {
     }
 
     //Custom methods
-    //TODO: check if path "date" is parsed correctly to LocalDate
-    @GetMapping("/date/{date}")
-    public ResponseEntity<List<Address>> getAddressByDate(@PathVariable("date") LocalDate date) {
+    @GetMapping("/by-date/{date}")
+    public ResponseEntity<List<Address>> getAddressByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         List<Address> result = addressRepository.
                 findByAddressModificationDateBetween(date.atStartOfDay(),
                         date.atTime(23, 59, 59));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/location/{region}")
+    @GetMapping("/by-location/{region}")
     public ResponseEntity<List<Address>> getAddressByRegion(@PathVariable("region") String region) {
         List<Address> result = addressRepository.findByAddressRegion(region);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/location/{region}/{province}")
+    @GetMapping("/by-location/{region}/{province}")
     public ResponseEntity<List<Address>> getAddressByProvince(
             @PathVariable("region") String region,
             @PathVariable("province") String province) {
@@ -78,7 +79,7 @@ public class AddressController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/location/{region}/{province}/{district}")
+    @GetMapping("/by-location/{region}/{province}/{district}")
     public ResponseEntity<List<Address>> getAddressByDistrict(
             @PathVariable("region") String region,
             @PathVariable("province") String province,

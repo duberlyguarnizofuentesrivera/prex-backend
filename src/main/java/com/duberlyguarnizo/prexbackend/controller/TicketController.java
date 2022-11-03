@@ -6,6 +6,7 @@ import com.duberlyguarnizo.prexbackend.model.Ticket;
 import com.duberlyguarnizo.prexbackend.repository.TicketRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +58,6 @@ public class TicketController {
     }
 
     //Custom methods
-    //TODO:rename two word paths to use hyphen
     @GetMapping("/by-client/{id}")
     public ResponseEntity<List<Ticket>> getTicketByClientId(@PathVariable("id") Long id) {
         List<Ticket> result = ticketRepository.findByTicketClient_ClientId(id);
@@ -78,7 +78,7 @@ public class TicketController {
     }
 
     @GetMapping("/by-date/{date}")
-    public ResponseEntity<List<Ticket>> getTicketsByDate(@PathVariable("date") LocalDate date) {
+    public ResponseEntity<List<Ticket>> getTicketsByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         List<Ticket> result = ticketRepository.findByTicketModificationDateBetween(date.atStartOfDay(), date.atTime(23, 59, 59));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

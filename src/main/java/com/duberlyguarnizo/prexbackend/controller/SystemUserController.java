@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -88,7 +89,7 @@ public class SystemUserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/role/{role}")
+    @GetMapping("/by-role/{role}")
     public ResponseEntity<Page<SystemUser>> getAllSystemUsersByRole(@PathVariable("role") String role, @RequestParam(defaultValue = "10") Integer page, @RequestParam(defaultValue = "15") Integer size) {
         try {
             UserRole userRole = UserRole.valueOf(role);
@@ -99,7 +100,7 @@ public class SystemUserController {
         }
     }
 
-    @GetMapping("/status/{status}")
+    @GetMapping("/by-status/{status}")
     public ResponseEntity<Page<SystemUser>> getAllSystemUsersByUserStatus(@PathVariable("status") String status, @RequestParam(defaultValue = "10") Integer page, @RequestParam(defaultValue = "15") Integer size) {
         try {
             UserStatus userStatus = UserStatus.valueOf(status);
@@ -110,12 +111,12 @@ public class SystemUserController {
         }
     }
 
-    @GetMapping("/username/{username}")
+    @GetMapping("/by-username/{username}")
     public ResponseEntity<SystemUser> getSystemUsersByUserName(@PathVariable("username") String username) {
-        SystemUser result = systemUserRepository.findBySystemUserUsername(username);
-        if (result == null) {
+        List<SystemUser> result = systemUserRepository.findBySystemUserUsername(username);
+        if (result.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result.get(0), HttpStatus.OK);
     }
 }

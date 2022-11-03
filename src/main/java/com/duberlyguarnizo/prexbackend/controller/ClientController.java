@@ -5,6 +5,7 @@ import com.duberlyguarnizo.prexbackend.model.Client;
 import com.duberlyguarnizo.prexbackend.repository.ClientRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +57,7 @@ public class ClientController {
     }
 
     //Custom methods
-    @GetMapping("/dni/{dni}")
+    @GetMapping("/by-dni/{dni}")
     public ResponseEntity<Client> getClientByDni(@PathVariable("dni") String dni) {
         List<Client> result = clientRepository.findByClientIdNumber(dni);
         if (result.isEmpty()) {
@@ -66,7 +67,7 @@ public class ClientController {
         return new ResponseEntity<>(result.get(0), HttpStatus.OK);
     }
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/by-name/{name}")
     public ResponseEntity<List<Client>> getClientByName(@PathVariable("name") String name) {
         List<Client> result = clientRepository.findByClientNames(name);
         if (result.isEmpty()) {
@@ -75,7 +76,7 @@ public class ClientController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/status/{status}")
+    @GetMapping("/by-status/{status}")
     public ResponseEntity<List<Client>> getClientByStatus(@PathVariable("status") String status) {
         try {
             UserStatus userStatus = UserStatus.valueOf(status);
@@ -89,8 +90,8 @@ public class ClientController {
         }
     }
 
-    @GetMapping("/date/{date}")
-    public ResponseEntity<List<Client>> getClientByDate(@PathVariable("date") LocalDate date) {
+    @GetMapping("/by-date/{date}")
+    public ResponseEntity<List<Client>> getClientByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         List<Client> result = clientRepository.findByClientModificationDateBetween(date.atStartOfDay(), date.atTime(23, 59, 59));
         if (result.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

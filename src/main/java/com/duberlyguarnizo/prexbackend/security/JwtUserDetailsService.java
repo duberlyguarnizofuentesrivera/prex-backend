@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
@@ -21,12 +22,14 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String username) {
-        final SystemUser systemUser = systemUserRepository.findBySystemUserUsername(username);
-        final String role = systemUser.getSystemUserRole().toString();
-        if (systemUser == null) {
-            //TODO: catch this exception in the controller
+        final List<SystemUser> systemUser = systemUserRepository.findBySystemUserUsername(username);
+        if (systemUser.size() == 1) {
+            SystemUser user = systemUser.get(0); //must be only one
+            final String role;
+            role = user.getSystemUserRole().toString();
+            return new User(username, user.getSystemUserPassword(), Collections.singletonList(new SimpleGrantedAuthority(role)));
+        } else {
             throw new UsernameNotFoundException("User " + username + " not found");
         }
-        return new User(username, systemUser.getSystemUserPassword(), Collections.singletonList(new SimpleGrantedAuthority(role)));
     }
 }

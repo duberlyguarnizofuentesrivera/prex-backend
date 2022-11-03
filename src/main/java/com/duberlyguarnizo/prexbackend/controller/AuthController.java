@@ -4,7 +4,6 @@ import com.duberlyguarnizo.prexbackend.security.AuthenticationRequest;
 import com.duberlyguarnizo.prexbackend.security.AuthenticationResponse;
 import com.duberlyguarnizo.prexbackend.security.JwtTokenService;
 import com.duberlyguarnizo.prexbackend.security.JwtUserDetailsService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -31,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    public AuthenticationResponse authenticate(@RequestBody @Valid final AuthenticationRequest authenticationRequest) {
+    public AuthenticationResponse authenticate(@RequestBody final AuthenticationRequest authenticationRequest) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getLogin(), authenticationRequest.getPassword()));

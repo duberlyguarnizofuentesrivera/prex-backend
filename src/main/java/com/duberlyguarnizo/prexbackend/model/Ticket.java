@@ -2,13 +2,15 @@ package com.duberlyguarnizo.prexbackend.model;
 
 import com.duberlyguarnizo.prexbackend.enums.TicketPaymentStatus;
 import com.duberlyguarnizo.prexbackend.enums.TicketStatus;
+import com.duberlyguarnizo.prexbackend.generators.TicketCodeGenerator;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.GeneratorType;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -24,10 +26,10 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ticketId;
-    @NotBlank
-    @Column(unique = true)
+    @GeneratorType(type = TicketCodeGenerator.class, when = GenerationTime.INSERT)
     private String ticketCode;
     @OneToMany
+    @ToString.Exclude
     private List<Shipment> shipments = new ArrayList<>();
     private double ticketTotalCost;
     @ToString.Exclude

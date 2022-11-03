@@ -6,9 +6,13 @@ import com.duberlyguarnizo.prexbackend.model.SystemUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface SystemUserRepository extends JpaRepository<SystemUser, Long> {
-    SystemUser findBySystemUserUsername(String username);
+    List<SystemUser> findBySystemUserUsername(String username);
 
     Page<SystemUser> findBySystemUserStatus(UserStatus systemUserStatus, PageRequest pageRequest);
 
